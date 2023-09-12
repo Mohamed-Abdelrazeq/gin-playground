@@ -26,12 +26,14 @@ func NewVideoController(service service.VideoService) VideoController {
 
 func (c *videoController) FindAll(ctx *gin.Context) {
 	videos, err := c.service.FindAll()
+
+	// BUSINESS LOGIC
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		helper.InvokeError(ctx, "error while fetching videos")
 		return
 	}
+
+	// RESPONSE
 	ctx.JSON(http.StatusOK, gin.H{
 		"videos": videos,
 	})
